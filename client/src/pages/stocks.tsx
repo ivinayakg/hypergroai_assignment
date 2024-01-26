@@ -116,7 +116,7 @@ function StocksPage() {
   return (
     <div className="py-5 flex flex-col justify-center items-center gap-5">
       {userState.login && (
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex justify-center items-center gap-4 flex-wrap">
           <DropdownMenuDateCheck date={date} setDate={setDate} />
           <Input
             placeholder="Stock Name"

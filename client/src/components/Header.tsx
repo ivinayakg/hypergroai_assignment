@@ -8,12 +8,12 @@ function Header() {
   const loginWithGoogleUrl = import.meta.env.VITE_GOOGLE_SIGN_IN;
   const urls = [
     {
-      name: "Top",
-      url: "/top",
-    },
-    {
       name: "Home",
       url: "/",
+    },
+    {
+      name: "Top",
+      url: "/top",
     },
     {
       name: "Favourites",
@@ -31,14 +31,18 @@ function Header() {
   };
 
   return (
-    <div className="min-w-full flex justify-between items-center py-5">
+    <div className="min-w-full flex justify-between items-center py-5 flex-col gap-4 border-b-2 border-primary-foreground sm:flex-row">
       <Link to="/">
-        <h1 className="text-3xl">Hypergro AI Assignment</h1>
+        <h1 className="text-2xl sm:text-3xl">Hypergro AI Assignment</h1>
       </Link>
-      <div className="flex justify-center items-center gap-4">
+      <div className="flex justify-center items-center gap-4 flex-wrap">
         {userState.login ? (
           <>
-            <Button className="border-2 border-primary" variant={"outline"} onClick={logout}>
+            <Button
+              className="border-2 border-primary"
+              variant={"outline"}
+              onClick={logout}
+            >
               Logout
             </Button>
             {urls.map((url, i) => (
