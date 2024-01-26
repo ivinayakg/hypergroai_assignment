@@ -9,6 +9,13 @@ import (
 
 const filename = "client_service.json"
 
+func sanitizeJSON(input string) string {
+	input = strings.ReplaceAll(input, "\\", "")
+	input = strings.ReplaceAll(input, "\\\"", "")
+
+	return input
+}
+
 func SaveAsJSON(input string) {
 	if _, err := os.Stat(filename); err == nil {
 		err = os.Remove(filename)
@@ -16,6 +23,9 @@ func SaveAsJSON(input string) {
 			log.Fatalf("Failed to delete the file. %v", err)
 		}
 	}
+
+	// Sanitize input
+	input = sanitizeJSON(input)
 
 	// Convert string to JSON
 	var jsonData map[string]interface{}
