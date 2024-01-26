@@ -36,7 +36,7 @@ func GetMigrationForTime(date string) (*StockMigration, error) {
 func GetMigrations() ([]*StockMigration, error) {
 	var results []*StockMigration
 
-	curr, err := helpers.CurrentDb.Migration.Find(context.TODO(), bson.M{})
+	curr, err := helpers.CurrentDb.Migration.Find(context.TODO(), bson.M{}, options.Find().SetSort(bson.M{"datadate": 1}))
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
