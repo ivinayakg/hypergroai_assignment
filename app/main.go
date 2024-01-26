@@ -30,6 +30,8 @@ func main() {
 	}
 
 	PORT := os.Getenv("PORT")
+	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "./client_service.json")
+	helpers.SaveAsJSON(os.Getenv("SERVICE_ACCOUNT_KEY"))
 
 	allowed_origins := strings.Split(os.Getenv("ALLOWED_ORIGINS"), " ")
 	corsHandler := cors.New(cors.Options{
