@@ -35,7 +35,7 @@ function Header() {
       <Link to="/">
         <h1 className="text-2xl sm:text-3xl">Hypergro AI Assignment</h1>
       </Link>
-      <div className="flex justify-center items-center gap-4 flex-wrap">
+      <div className="flex justify-center items-center gap-4 flex-wrap sm:flex-nowrap">
         {userState.login ? (
           <>
             <Button
