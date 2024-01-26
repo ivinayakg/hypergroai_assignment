@@ -19,7 +19,7 @@ func AddFavourite(w http.ResponseWriter, r *http.Request) {
 	var body AddFavouriteRequestBody
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -27,11 +27,11 @@ func AddFavourite(w http.ResponseWriter, r *http.Request) {
 
 	res, err := models.AddFavourite(user.ID.Hex(), body.StockCode)
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	helpers.SetHeaders("POST", w, http.StatusCreated)
+	helpers.SetHeaders("POST", &w, http.StatusCreated)
 	json.NewEncoder(w).Encode(bson.M{"message": "success", "data": res})
 }
 
@@ -43,11 +43,11 @@ func RemoveFavourite(w http.ResponseWriter, r *http.Request) {
 
 	res, err := models.RemoveFavourite(user.ID.Hex(), stockCode)
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	helpers.SetHeaders("DELETE", w, http.StatusAccepted)
+	helpers.SetHeaders("DELETE", &w, http.StatusAccepted)
 	json.NewEncoder(w).Encode(bson.M{"message": "success", "data": res})
 }
 
@@ -56,11 +56,11 @@ func GetUserFavourite(w http.ResponseWriter, r *http.Request) {
 
 	res, err := models.GetFavouriteStocks(user.ID.Hex())
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	helpers.SetHeaders("GET", w, http.StatusOK)
+	helpers.SetHeaders("GET", &w, http.StatusOK)
 	json.NewEncoder(w).Encode(bson.M{"message": "success", "data": res})
 }
 func GetUserFavouriteCodes(w http.ResponseWriter, r *http.Request) {
@@ -68,7 +68,7 @@ func GetUserFavouriteCodes(w http.ResponseWriter, r *http.Request) {
 
 	res, err := models.GetFavouriteStocks(user.ID.Hex())
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -77,6 +77,6 @@ func GetUserFavouriteCodes(w http.ResponseWriter, r *http.Request) {
 		results = append(results, entry.StockCode)
 	}
 
-	helpers.SetHeaders("GET", w, http.StatusOK)
+	helpers.SetHeaders("GET", &w, http.StatusOK)
 	json.NewEncoder(w).Encode(bson.M{"message": "success", "data": results})
 }

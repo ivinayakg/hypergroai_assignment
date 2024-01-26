@@ -22,26 +22,26 @@ var methodChoices = map[string]string{
 	"del":   "DELETE",
 }
 
-func SetHeaders(type_ string, w http.ResponseWriter, status int) {
+func SetHeaders(type_ string, w *http.ResponseWriter, status int) {
 	method := methodChoices[type_]
 	if method == "" {
 		method = "GET"
 	}
 
-	w.WriteHeader(status)
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).WriteHeader(status)
+	(*w).Header().Set("Content-Type", "application/json")
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 	if method != "GET" {
-		w.Header().Set("Access-Control-Allow-Methods", method)
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		(*w).Header().Set("Access-Control-Allow-Methods", method)
+		(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	}
 }
 
-func SendJSONError(w http.ResponseWriter, statusCode int, errorMessage string) {
+func SendJSONError(w *http.ResponseWriter, statusCode int, errorMessage string) {
 	errorResponse := ErrorResponse{Error: errorMessage}
-	w.Header().Set("content-Type", "application/json")
-	w.WriteHeader(statusCode)
-	json.NewEncoder(w).Encode(errorResponse)
+	(*w).Header().Set("content-Type", "application/json")
+	(*w).WriteHeader(statusCode)
+	json.NewEncoder((*w)).Encode(errorResponse)
 }
 
 func ContainsString(arr *[]string, target *string) bool {

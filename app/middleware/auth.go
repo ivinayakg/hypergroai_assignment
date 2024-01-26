@@ -25,7 +25,7 @@ func Authentication(next http.Handler) http.Handler {
 		tokenHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
 		if len(tokenHeader) < 2 {
 			errMsg := "Authentication error!, Provide valid auth token"
-			helpers.SendJSONError(w, http.StatusForbidden, errMsg)
+			helpers.SendJSONError(&w, http.StatusForbidden, errMsg)
 			log.Println(errMsg)
 			return
 		}
@@ -34,7 +34,7 @@ func Authentication(next http.Handler) http.Handler {
 		verifyUserData, err := utils.VerifyJwt(token)
 		if err != nil {
 			errMsg := err.Error()
-			helpers.SendJSONError(w, http.StatusForbidden, errMsg)
+			helpers.SendJSONError(&w, http.StatusForbidden, errMsg)
 			log.Println(errMsg)
 			return
 		}
@@ -50,7 +50,7 @@ func Authentication(next http.Handler) http.Handler {
 				if err != mongo.ErrNoDocuments {
 					errMsg = "Authentication error!"
 				}
-				helpers.SendJSONError(w, http.StatusForbidden, errMsg)
+				helpers.SendJSONError(&w, http.StatusForbidden, errMsg)
 				log.Println(errMsg)
 				return
 			}

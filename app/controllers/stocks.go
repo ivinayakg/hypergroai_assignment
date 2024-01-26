@@ -19,16 +19,16 @@ type RequestBodyStocks struct {
 func GetStocksUnverified(w http.ResponseWriter, r *http.Request) {
 	migration, err := models.GetLastMigration()
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	stocks, err := models.GetStocksData(1, migration.DataDate, "", int64(10), false)
 	if err != nil && err != mongo.ErrNoDocuments {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
-	helpers.SetHeaders("GET", w, http.StatusOK)
+	helpers.SetHeaders("GET", &w, http.StatusOK)
 
 	if len(stocks) == 0 {
 		json.NewEncoder(w).Encode(bson.M{"message": "success", "data": "[]"})
@@ -54,7 +54,7 @@ func GetStocks(w http.ResponseWriter, r *http.Request) {
 
 	// Parse the string into a time.Time value
 	if date == "" {
-		helpers.SendJSONError(w, http.StatusBadRequest, fmt.Errorf("date is a required query_param").Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, fmt.Errorf("date is a required query_param").Error())
 		return
 	}
 
@@ -64,17 +64,17 @@ func GetStocks(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		migration, err = models.GetLastMigration()
 		if err != nil {
-			helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+			helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 			return
 		}
 	}
 
 	stocks, err := models.GetStocksData(page, migration.DataDate, search, int64(size), false)
 	if err != nil && err != mongo.ErrNoDocuments {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
-	helpers.SetHeaders("GET", w, http.StatusOK)
+	helpers.SetHeaders("GET", &w, http.StatusOK)
 
 	if len(stocks) == 0 {
 		json.NewEncoder(w).Encode(bson.M{"message": "success", "data": []string{}})
@@ -100,7 +100,7 @@ func GetTopStocks(w http.ResponseWriter, r *http.Request) {
 
 	// Parse the string into a time.Time value
 	if date == "" {
-		helpers.SendJSONError(w, http.StatusBadRequest, fmt.Errorf("date is a required query_param").Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, fmt.Errorf("date is a required query_param").Error())
 		return
 	}
 
@@ -110,17 +110,17 @@ func GetTopStocks(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		migration, err = models.GetLastMigration()
 		if err != nil {
-			helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+			helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 			return
 		}
 	}
 
 	stocks, err := models.GetStocksData(page, migration.DataDate, search, int64(size), true)
 	if err != nil && err != mongo.ErrNoDocuments {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
-	helpers.SetHeaders("GET", w, http.StatusOK)
+	helpers.SetHeaders("GET", &w, http.StatusOK)
 
 	if len(stocks) == 0 {
 		json.NewEncoder(w).Encode(bson.M{"message": "success", "data": []string{}})
@@ -133,15 +133,15 @@ func GetTopStocks(w http.ResponseWriter, r *http.Request) {
 func GetStockDetail(w http.ResponseWriter, r *http.Request) {
 	stockCode, found := mux.Vars(r)["id"]
 	if !found {
-		helpers.SendJSONError(w, http.StatusBadRequest, fmt.Errorf("stock Code is required in the url").Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, fmt.Errorf("stock Code is required in the url").Error())
 		return
 	}
 
 	stock, err := models.GetStockDetail(stockCode)
 	if err != nil {
-		helpers.SendJSONError(w, http.StatusBadRequest, err.Error())
+		helpers.SendJSONError(&w, http.StatusBadRequest, err.Error())
 		return
 	}
-	helpers.SetHeaders("GET", w, http.StatusOK)
+	helpers.SetHeaders("GET", &w, http.StatusOK)
 	json.NewEncoder(w).Encode(bson.M{"message": "success", "data": stock})
 }
