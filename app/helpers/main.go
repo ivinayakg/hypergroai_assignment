@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-var IndiaLocation, _ = time.LoadLocation("Asia/Kolkata")
-
 type ErrorResponse struct {
 	Error string `json:"error"`
 }
@@ -87,7 +85,7 @@ func ConvertFilenameToDate(filename string) (*time.Time, error) {
 	}
 
 	// Construct a time.Time object
-	date := time.Date(2000+year, time.Month(month), day, 0, 0, 0, 0, IndiaLocation)
+	date := time.Date(2000+year, time.Month(month), day, 0, 0, 0, 0, time.FixedZone("UTC+5:30", 5*60*60+30*60))
 	return &date, nil
 }
 
