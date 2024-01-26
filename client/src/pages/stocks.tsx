@@ -158,7 +158,7 @@ function StocksPage() {
               return (
                 <TableRow key={stock._id}>
                   <TableCell className="font-medium text-left">
-                    {i + 1}
+                    {i + 1 + ((page - 1) * stockInfoData.length)}
                   </TableCell>
                   <TableCell className="font-medium text-left">
                     {stock.date}
